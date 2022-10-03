@@ -1,7 +1,3 @@
-# Base Express Vue
+# DB Crypto
 
-Base Express Vue for bootstrap web service project
-
-- Express
-- Bootstrap
-- Vue
+Probando encriptar campos de una base de datos

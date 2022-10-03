@@ -1,7 +1,7 @@
 export default {
     data() {
         return {
-            title: 'Base Express Vue'
+            title: 'DB Crypto'
         };
     },
 

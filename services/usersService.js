@@ -16,7 +16,7 @@ const usersService = {
                 if (err) {
                     reject(err);
                 } else {
-                    resolve({ rows: rows });
+                    resolve(rows);
                 }
             });
         });

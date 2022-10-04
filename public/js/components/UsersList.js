@@ -2,23 +2,28 @@ export default {
     data() {
         return {
             title: 'Usuarios',
-            items: [],
-            newUser: {
+            users: [],
+            newUserData: {
                 username: '',
                 publickey: ''
-            }
+            },
+            editUserData: {
+                id: null,
+                username: '',
+                publickey: ''
+            },
         };
     },
 
     mounted() {
-        this.getItems();
+        this.getUsers();
     },
 
     methods: {
-        async getItems() {
+        async getUsers() {
             try {
                 const result = await axios.get(`/users`);
-                this.items = result.data;
+                this.users = result.data;
             } catch (error) {
                 console.log(error);
             }
@@ -30,8 +35,44 @@ export default {
             }).show();
         },
 
-        addUser() {
-            console.log(this.newUser);
+        async addUser() {
+            try {
+                console.log(this.newUserData);
+                const data = this.newUserData;
+                const result = await axios.post(`/users`, data);
+                console.log(result);
+                await this.getUsers();
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        async editUserModal(userId) {
+            try {
+                const result = await axios.get(`/users/${userId}`);
+                this.editUserData = result.data;
+                new bootstrap.Modal('#editUserModal', {
+                    backdrop: 'static'
+                }).show();
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        async updateUser() {
+            try {
+                console.log(this.editUserData);
+                const data = this.editUserData;
+                const result = await axios.put(`/users/${data.id}`, data);
+                console.log(result);
+                await this.getUsers();
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        async deleteUserModal(userId) {
+            console.log(userId);
         },
     },
 
@@ -39,7 +80,7 @@ export default {
 <div>
     <h2>{{title}}</h2>
 
-    <button class="btn btn-secondary btn-sm" @click="getItems">Traer items</button>
+    <button class="btn btn-secondary btn-sm" @click="getUsers">Traer items</button>
     <button type="button" class="btn btn-primary btn-sm ms-1" @click="addUserModal">
         Crear
     </button>
@@ -49,17 +90,22 @@ export default {
             <th>id</th>
             <th>username</th>
             <th>publickey</th>
+            <th>acciones</th>
         </thead>
         <tbody>
-            <tr v-for="item of items">
-                <td>{{ item.id }}</td>
-                <td>{{ item.username }}</td>
-                <td>{{ item.publickey }}</td>
+            <tr v-for="user of users">
+                <td>{{ user.id }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.publickey }}</td>
+                <td>
+                <button class="btn btn-warning btn-sm" @click="editUserModal(user.id)">Modificar</button>
+                <button class="btn btn-danger btn-sm ms-1" @click="deleteUserModal(user.id)">Eliminar</button>
+                </td>
             </tr> 
         </tbody>
     </table>
 
-    <!-- Modal -->
+    <!-- addUserModal -->
     <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -71,15 +117,45 @@ export default {
                 <form>
                     <div class="mb-3">
                         <label for="addUserInputUsername" class="form-label">username</label>
-                        <input v-model="newUser.username" type="text" class="form-control" id="addUserInputUsername" aria-describedby="addUserInputUsernameHelp">
+                        <input v-model="newUserData.username" type="text" class="form-control" id="addUserInputUsername" aria-describedby="addUserInputUsernameHelp">
                         <div id="addUserInputUsernameHelp" class="form-text">Nombre de usuario</div>
                     </div>
                     <div class="mb-3">
                         <label for="addUserInputPublickey" class="form-label">publickey</label>
-                        <textarea v-model="newUser.publickey" class="form-control" id="addUserInputPublickey" aria-describedby="addUserInputPublickeyHelp"></textarea>
+                        <textarea v-model="newUserData.publickey" class="form-control" id="addUserInputPublickey" aria-describedby="addUserInputPublickeyHelp"></textarea>
                         <div id="addUserInputPublickeyHelp" class="form-text">Llave pública</div>
                     </div>
                     <button type="button" class="btn btn-primary" @click="addUser">Crear</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- editUserModal -->
+    <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-danger" id="editUserModalLabel">Modificar Usuario</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="editUserInputUsername" class="form-label">username</label>
+                        <input v-model="editUserData.username" type="text" class="form-control" id="editUserInputUsername" aria-describedby="editUserInputUsernameHelp">
+                        <div id="editUserInputUsernameHelp" class="form-text">Nombre de usuario</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editUserInputPublickey" class="form-label">publickey</label>
+                        <textarea v-model="editUserData.publickey" class="form-control" id="editUserInputPublickey" aria-describedby="editUserInputPublickeyHelp"></textarea>
+                        <div id="editUserInputPublickeyHelp" class="form-text">Llave pública</div>
+                    </div>
+                    <button type="button" class="btn btn-primary" @click="updateUser">Guardar</button>
                 </form>
             </div>
             <div class="modal-footer">

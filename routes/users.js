@@ -10,5 +10,8 @@ const usersController = require('../controllers/usersController').create({
 });
 
 router.get('/', usersController.findAll());
+router.get('/:id', usersController.find());
+router.post('/', usersController.add());
+router.put('/:id', usersController.update());
 
 module.exports = router;

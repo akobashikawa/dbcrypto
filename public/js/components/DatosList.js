@@ -1,7 +1,7 @@
 export default {
     data() {
         return {
-            title: 'Personas',
+            title: 'Datos',
             items: []
         };
     },
@@ -13,7 +13,7 @@ export default {
     methods: {
         async getItems() {
             try {
-                const result = await axios.get(`/personas`);
+                const result = await axios.get(`/datos`);
                 this.items = result.data;
             } catch (error) {
                 console.log(error);
@@ -31,15 +31,15 @@ export default {
         <thead>
             <th>id</th>
             <th>username</th>
-            <th>Nombre</th>
-            <th>Secreto</th>
+            <th>publico</th>
+            <th>privado</th>
         </thead>
         <tbody>
             <tr v-for="item of items">
                 <td>{{ item.id }}</td>
                 <td>{{ item.username }}</td>
-                <td>{{ item.nombre }}</td>
-                <td>{{ item.secreto }}</td>
+                <td>{{ item.publico }}</td>
+                <td>{{ item.privado }}</td>
             </tr> 
         </tbody>
     </table>

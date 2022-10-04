@@ -1,8 +1,10 @@
 import UsersList from './UsersList.js';
+import PersonasList from './PersonasList.js';
 
 export default {
     components: {
-        UsersList
+        UsersList,
+        PersonasList
     },
     
     data() {
@@ -15,6 +17,7 @@ export default {
 <div>
     <h1>{{title}}</h1>
     <UsersList />
+    <PersonasList />
 </div>
     `,
 };

@@ -21,7 +21,19 @@ const sqlite3Repository = {
 
     getDb() {
         return this.db;
-    }
+    },
+
+    query(sql, params) {
+        return new Promise((resolve, reject) => {
+            this.db.all(sql, params, (err, rows) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(rows);
+                }
+            });
+        });
+    },
 };
 
 module.exports = sqlite3Repository;

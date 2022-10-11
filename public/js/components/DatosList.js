@@ -108,11 +108,11 @@ export default {
             <th>privado</th>
         </thead>
         <tbody>
-            <tr v-for="user of datos">
-                <td><a href="#" @click.prevent="editDatoModalOpen(user.id)">{{ user.id }}</a></td>
-                <td>{{ user.userId }}</td>
-                <td>{{ user.publico }}</td>
-                <td>{{ user.privado }}</td>
+            <tr v-for="dato of datos">
+                <td><a href="#" @click.prevent="editDatoModalOpen(dato.id)">{{ dato.id }}</a></td>
+                <td>{{ dato.userId }}</td>
+                <td>{{ dato.publico }}</td>
+                <td>{{ dato.privado }}</td>
             </tr> 
         </tbody>
     </table>
@@ -133,14 +133,14 @@ export default {
                         <div id="addDatoInputUserIdHelp" class="form-text">id de usuario</div>
                     </div>
                     <div class="mb-3">
-                        <label for="editDatoInputPassword" class="form-label">publico</label>
-                        <textarea v-model="editDatoData.publico" class="form-control" id="editDatoInputPassword" aria-describedby="editDatoInputPasswordHelp"></textarea>
-                        <div id="editDatoInputPasswordHelp" class="form-text">dato público</div>
+                        <label for="addDatoInputPublico" class="form-label">publico</label>
+                        <textarea v-model="newDatoData.publico" class="form-control" id="addDatoInputPublico" aria-describedby="addDatoInputPublicoHelp"></textarea>
+                        <div id="addDatoInputPublicoHelp" class="form-text">dato público</div>
                     </div>
                     <div class="mb-3">
-                        <label for="addDatoInputPublickey" class="form-label">privado</label>
-                        <textarea v-model="newDatoData.privado" class="form-control" id="addDatoInputPublickey" aria-describedby="addDatoInputPublickeyHelp"></textarea>
-                        <div id="addDatoInputPublickeyHelp" class="form-text">dato privado</div>
+                        <label for="addDatoInputPrivado" class="form-label">privado</label>
+                        <textarea v-model="newDatoData.privado" class="form-control" id="addDatoInputPrivado" aria-describedby="addDatoInputPrivadoHelp"></textarea>
+                        <div id="addDatoInputPrivadoHelp" class="form-text">dato privado</div>
                     </div>
                 </form>
             </div>

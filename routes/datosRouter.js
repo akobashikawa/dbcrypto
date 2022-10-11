@@ -13,5 +13,9 @@ const datosController = require('../controllers/datosController').create({
 });
 
 router.get('/', datosController.findAll());
+router.get('/:id', datosController.find());
+router.post('/', datosController.add());
+router.put('/:id', datosController.update());
+router.delete('/:id', datosController.delete());
 
 module.exports = router;

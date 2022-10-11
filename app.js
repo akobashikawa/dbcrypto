@@ -2,13 +2,16 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-
-const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
-const personasRouter = require('./routes/personas');
-const datosRouter = require('./routes/datos');
+const cors = require('cors');
+const routes = require('./routes');
 
 const app = express();
+
+if (app.get('env') == 'development') {
+    console.log('env: development');
+    app.use(cors());
+    console.log('Enabled All CORS Requests');
+}
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -16,9 +19,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/personas', personasRouter);
-app.use('/datos', datosRouter);
+routes(app);
 
 module.exports = app;

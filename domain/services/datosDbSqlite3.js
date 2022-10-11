@@ -1,10 +1,7 @@
-const usersService = {
-
+const sqlite3Service = {
     db: null,
 
-    create({
-        db
-    }) {
+    create({db}) {
         const obj = Object.create(this);
         obj.db = db;
         return obj;
@@ -23,11 +20,14 @@ const usersService = {
     },
 
     findAll() {
-        const sql = `SELECT * FROM Users`;
-        const params = [];
+        var sql = `SELECT d.id, u.username, d.publico, d.privado
+        FROM Datos d
+        JOIN Users u
+        WHERE d.userId = u.id`;
+        var params = [];
         return this.query(sql, params);
     },
-
+/*
     findById(id) {
         const sql = `SELECT * FROM Users WHERE id=${id}`;
         const params = [];
@@ -56,6 +56,14 @@ const usersService = {
         return this.query(sql, params);
     },
 
+    delete(id) {
+        const sql = `DELETE FROM Users
+        WHERE id=${id}
+        `;
+        const params = [];
+        return this.query(sql, params);
+    },
+    */
 };
 
-module.exports = usersService;
+module.exports = sqlite3Service;

@@ -5,11 +5,13 @@ export default {
             users: [],
             newUserData: {
                 username: '',
+                password: '',
                 publickey: ''
             },
             editUserData: {
                 id: null,
                 username: '',
+                password: '',
                 publickey: ''
             },
             addUserModal: null,
@@ -102,12 +104,14 @@ export default {
         <thead>
             <th>id</th>
             <th>username</th>
+            <th>password</th>
             <th>publickey</th>
         </thead>
         <tbody>
             <tr v-for="user of users">
                 <td>{{ user.id }}</td>
                 <td><a href="#" @click.prevent="editUserModalOpen(user.id)">{{ user.username }}</a></td>
+                <td>{{ user.password }}</td>
                 <td>{{ user.publickey }}</td>
             </tr> 
         </tbody>
@@ -127,6 +131,11 @@ export default {
                         <label for="addUserInputUsername" class="form-label">username</label>
                         <input v-model="newUserData.username" type="text" class="form-control" id="addUserInputUsername" aria-describedby="addUserInputUsernameHelp">
                         <div id="addUserInputUsernameHelp" class="form-text">Nombre de usuario</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editUserInputPassword" class="form-label">password</label>
+                        <input v-model="editUserData.password" type="text" class="form-control" id="editUserInputPassword" aria-describedby="editUserInputPasswordHelp">
+                        <div id="editUserInputPasswordHelp" class="form-text">Contraseña</div>
                     </div>
                     <div class="mb-3">
                         <label for="addUserInputPublickey" class="form-label">publickey</label>
@@ -157,6 +166,11 @@ export default {
                         <label for="editUserInputUsername" class="form-label">username</label>
                         <input v-model="editUserData.username" type="text" class="form-control" id="editUserInputUsername" aria-describedby="editUserInputUsernameHelp">
                         <div id="editUserInputUsernameHelp" class="form-text">Nombre de usuario</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editUserInputPassword" class="form-label">password</label>
+                        <input v-model="editUserData.password" type="text" class="form-control" id="editUserInputPassword" aria-describedby="editUserInputPasswordHelp">
+                        <div id="editUserInputPasswordHelp" class="form-text">Contraseña</div>
                     </div>
                     <div class="mb-3">
                         <label for="editUserInputPublickey" class="form-label">publickey</label>

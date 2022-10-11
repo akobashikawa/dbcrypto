@@ -20,23 +20,31 @@ const usersDbSqlite3 = {
     },
 
     add(data) {
-        const username = data.username;
-        const publickey = data.publickey;
+        const entries = Object.entries(data)
+            .filter(item => (item[0] != 'id') && item[1]);
+        // construye lista de columnas a partir de la data
+        const listColumns = entries
+            .map(item => `${item[0]}`)
+            .join(', ');
+        // construye lista de valores a partir de la data
+        const listValues = entries
+            .map(item => isNaN(item[1]) ? `'${item[1]}'` : item[1])
+            .join(', '); 
         const sql = `INSERT INTO Users
-        (username, publickey)
-        VALUES('${username}', '${publickey}');
+        (${listColumns})
+        VALUES(${listValues});
         `;
         const params = [];
         return this.dbRepository.query(sql, params);
     },
 
     update(id, data) {
-        const username = data.username;
-        const publickey = data.publickey;
-        const sql = `UPDATE Users
-        SET username='${username}', publickey='${publickey}'
-        WHERE id=${id}
-        `;
+        // construye la lista de asignaciones a partir de la data
+        const listColumnValues = Object.entries(data)
+            .filter(item => (item[0] != 'id') && item[1])
+            .map(item => isNaN(item[1]) ? `${item[0]}='${item[1]}'` : `${item[0]}=${item[1]}`)
+            .join(', ');
+        const sql = `UPDATE Users SET ${listColumnValues} WHERE id=${id}`;
         const params = [];
         return this.dbRepository.query(sql, params);
     },

@@ -12,6 +12,8 @@ export default {
                 username: '',
                 publickey: ''
             },
+            addUserModal: null,
+            editUserModal: null,
         };
     },
 
@@ -22,38 +24,41 @@ export default {
     methods: {
         async getUsers() {
             try {
-                const result = await axios.get(`/users`);
+                const result = await axios.get(`/api/users`);
                 this.users = result.data;
             } catch (error) {
                 console.log(error);
             }
         },
 
-        addUserModal() {
-            new bootstrap.Modal('#addUserModal', {
+        addUserModalOpen() {
+            this.addUserModal = new bootstrap.Modal('#addUserModal', {
                 backdrop: 'static'
-            }).show();
+            });
+            this.addUserModal.show();
         },
 
         async addUser() {
             try {
                 console.log(this.newUserData);
                 const data = this.newUserData;
-                const result = await axios.post(`/users`, data);
+                const result = await axios.post(`/api/users`, data);
                 console.log(result);
                 await this.getUsers();
+                this.addUserModal.hide();
             } catch (error) {
                 console.log(error);
             }
         },
 
-        async editUserModal(userId) {
+        async editUserModalOpen(userId) {
             try {
-                const result = await axios.get(`/users/${userId}`);
+                const result = await axios.get(`/api/users/${userId}`);
                 this.editUserData = result.data;
-                new bootstrap.Modal('#editUserModal', {
+                this.editUserModal = new bootstrap.Modal('#editUserModal', {
                     backdrop: 'static'
-                }).show();
+                });
+                this.editUserModal.show()
             } catch (error) {
                 console.log(error);
             }
@@ -63,15 +68,16 @@ export default {
             try {
                 console.log(this.editUserData);
                 const data = this.editUserData;
-                const result = await axios.put(`/users/${data.id}`, data);
+                const result = await axios.put(`/api/users/${data.id}`, data);
                 console.log(result);
                 await this.getUsers();
+                this.editUserModal.hide();
             } catch (error) {
                 console.log(error);
             }
         },
 
-        async deleteUserModal(userId) {
+        async deleteUserModalOpen(userId) {
             console.log(userId);
         },
     },
@@ -81,7 +87,7 @@ export default {
     <h2>{{title}}</h2>
 
     <button class="btn btn-secondary btn-sm" @click="getUsers">Traer items</button>
-    <button type="button" class="btn btn-primary btn-sm ms-1" @click="addUserModal">
+    <button type="button" class="btn btn-primary btn-sm ms-1" @click="addUserModalOpen">
         Crear
     </button>
 
@@ -98,15 +104,15 @@ export default {
                 <td>{{ user.username }}</td>
                 <td>{{ user.publickey }}</td>
                 <td>
-                <button class="btn btn-warning btn-sm" @click="editUserModal(user.id)">Modificar</button>
-                <button class="btn btn-danger btn-sm ms-1" @click="deleteUserModal(user.id)">Eliminar</button>
+                <button class="btn btn-warning btn-sm" @click="editUserModalOpen(user.id)">Modificar</button>
+                <button class="btn btn-danger btn-sm ms-1" @click="deleteUserModalOpen(user.id)">Eliminar</button>
                 </td>
             </tr> 
         </tbody>
     </table>
 
     <!-- addUserModal -->
-    <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+    <div class="modal fade" id="addUserModal" ref="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
             <div class="modal-header">
@@ -136,7 +142,7 @@ export default {
     </div>
 
     <!-- editUserModal -->
-    <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
+    <div class="modal fade" id="editUserModal" ref="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
             <div class="modal-header">

@@ -13,7 +13,7 @@ export default {
     methods: {
         async getItems() {
             try {
-                const result = await axios.get(`/datos`);
+                const result = await axios.get(`/api/datos`);
                 this.items = result.data;
             } catch (error) {
                 console.log(error);

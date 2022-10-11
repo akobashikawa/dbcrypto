@@ -77,8 +77,17 @@ export default {
             }
         },
 
-        async deleteUserModalOpen(userId) {
-            console.log(userId);
+        async deleteUser() {
+            try {
+                console.log(this.editUserData);
+                const data = this.editUserData;
+                const result = await axios.delete(`/api/users/${data.id}`, data);
+                console.log(result);
+                await this.getUsers();
+                this.editUserModal.hide();
+            } catch (error) {
+                console.log(error);
+            }
         },
     },
 
@@ -86,27 +95,20 @@ export default {
 <div>
     <h2>{{title}}</h2>
 
-    <button class="btn btn-secondary btn-sm" @click="getUsers">Traer items</button>
-    <button type="button" class="btn btn-primary btn-sm ms-1" @click="addUserModalOpen">
-        Crear
-    </button>
+    <button type="button" class="btn btn-primary btn-sm ms-1 float-end" @click="addUserModalOpen"> Crear </button>
+    <button class="btn btn-secondary btn-sm float-end" @click="getUsers">Traer items</button>
 
     <table class="table table-striped table-hover table-sm">
         <thead>
             <th>id</th>
             <th>username</th>
             <th>publickey</th>
-            <th>acciones</th>
         </thead>
         <tbody>
             <tr v-for="user of users">
                 <td>{{ user.id }}</td>
-                <td>{{ user.username }}</td>
+                <td><a href="#" @click.prevent="editUserModalOpen(user.id)">{{ user.username }}</a></td>
                 <td>{{ user.publickey }}</td>
-                <td>
-                <button class="btn btn-warning btn-sm" @click="editUserModalOpen(user.id)">Modificar</button>
-                <button class="btn btn-danger btn-sm ms-1" @click="deleteUserModalOpen(user.id)">Eliminar</button>
-                </td>
             </tr> 
         </tbody>
     </table>
@@ -131,11 +133,11 @@ export default {
                         <textarea v-model="newUserData.publickey" class="form-control" id="addUserInputPublickey" aria-describedby="addUserInputPublickeyHelp"></textarea>
                         <div id="addUserInputPublickeyHelp" class="form-text">Llave pública</div>
                     </div>
-                    <button type="button" class="btn btn-primary" @click="addUser">Crear</button>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" @click="addUser">Crear</button>
             </div>
             </div>
         </div>
@@ -161,11 +163,12 @@ export default {
                         <textarea v-model="editUserData.publickey" class="form-control" id="editUserInputPublickey" aria-describedby="editUserInputPublickeyHelp"></textarea>
                         <div id="editUserInputPublickeyHelp" class="form-text">Llave pública</div>
                     </div>
-                    <button type="button" class="btn btn-primary" @click="updateUser">Guardar</button>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-danger" @click="deleteUser">Eliminar</button>
+                <button type="button" class="btn btn-primary" @click="updateUser">Guardar</button>
             </div>
             </div>
         </div>

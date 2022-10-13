@@ -94,8 +94,8 @@ export default {
     },
 
     template: `
-<div>
-    <h2>{{title}}</h2>
+<div class="component">
+    <h1>{{title}}</h1>
 
     <button type="button" class="btn btn-primary btn-sm ms-1 float-end" @click="addDatoModalOpen"> Crear </button>
     <button class="btn btn-secondary btn-sm float-end" @click="getDatos">Traer items</button>

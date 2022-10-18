@@ -1,7 +1,10 @@
+import {store} from './store.js';
+
 export default {
     data() {
         return {
             title: 'Datos',
+            store,
             datos: [],
             newDatoData: {
                 userId: '',
@@ -97,7 +100,7 @@ export default {
 <div class="component">
     <h1>{{title}}</h1>
 
-    <button type="button" class="btn btn-primary btn-sm ms-1 float-end" @click="addDatoModalOpen"> Crear </button>
+    <button type="button" class="btn btn-primary btn-sm ms-1 float-end" @click="addDatoModalOpen" v-if="store.login"> Crear </button>
     <button class="btn btn-secondary btn-sm float-end" @click="getDatos">Traer items</button>
 
     <table class="table table-striped table-hover table-sm">
@@ -118,7 +121,7 @@ export default {
     </table>
 
     <!-- addDatoModal -->
-    <div class="modal fade" id="addDatoModal" ref="addDatoModal" tabindex="-1" aria-labelledby="addDatoModalLabel" aria-hidden="true">
+    <div class="modal fade" id="addDatoModal" ref="addDatoModal" tabindex="-1" aria-labelledby="addDatoModalLabel" aria-hidden="true" v-if="store.login">
         <div class="modal-dialog">
             <div class="modal-content">
             <div class="modal-header">
@@ -129,7 +132,7 @@ export default {
                 <form>
                     <div class="mb-3">
                         <label for="addDatoInputUserId" class="form-label">userId</label>
-                        <input v-model="newDatoData.userId" type="text" class="form-control" id="addDatoInputUserId" aria-describedby="addDatoInputUserIdHelp">
+                        {{ store.login.id }}
                         <div id="addDatoInputUserIdHelp" class="form-text">id de usuario</div>
                     </div>
                     <div class="mb-3">

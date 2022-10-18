@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const dbRepository = require('../domain/repositories/sqlite3Repository').create('from datos');
-const datosDatabase = require('../domain/services/datosDbSqlite3').create({
+const datosDatabase = require('../domain/services/datosDatabaseSqlite3').create({
   dbRepository
 });
 const datosService = require('../domain/services/datosService').create({

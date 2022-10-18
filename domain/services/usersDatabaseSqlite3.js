@@ -35,7 +35,7 @@ const usersDbSqlite3 = {
         VALUES(${listValues});
         `;
         const params = [];
-        return this.dbRepository.query(sql, params);
+        return this.dbRepository.run(sql, params);
     },
 
     update(id, data) {

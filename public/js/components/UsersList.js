@@ -114,11 +114,13 @@ export default {
             this.updateKeysModal = new bootstrap.Modal('#updateKeysModal', {
                 backdrop: 'static'
             });
-            this.updateKeysModal.show();
+            this.editUserModal.toggle();
+            this.updateKeysModal.toggle();
         },
 
         updateKeysModalClose() {
-            this.updateKeysModal.hide();
+            this.updateKeysModal.toggle();
+            this.editUserModal.toggle();
         }
     },
 
@@ -138,12 +140,12 @@ export default {
             <th>privatekey</th>
         </thead>
         <tbody>
-            <tr v-for="user of users">
+            <tr v-for="user of users" :key="user.id">
                 <td>{{ user.id }}</td>
                 <td><a href="#" @click.prevent="editUserModalOpen(user.id)">{{ user.username }}</a></td>
                 <td>{{ user.password }}</td>
-                <td>{{ user.publickey ? user.publickey.substr(27, 5) : '-' }}</td>
-                <td>{{ user.privatekey ? user.privatekey.substr(38, 5) : '-' }}</td>
+                <td>{{ user.publickey ? user.publickey.substr(71, 8) : '-' }}</td>
+                <td>{{ user.privatekey ? user.privatekey.substr(86, 8) : '-' }}</td>
             </tr> 
         </tbody>
     </table>

@@ -19,14 +19,42 @@ export default {
             addUserModal: null,
             editUserModal: null,
             updateKeysModal: null,
+            toast: null,
+            toastMessage: 'Hola',
+            toastClass: 'bg-secondary',
+            toastOptions: {
+                delay: 1000
+            },
         };
     },
 
     mounted() {
         this.getUsers();
+        this.addUserModal = new bootstrap.Modal('#addUserModal', {
+            backdrop: 'static'
+        });
+        this.editUserModal = new bootstrap.Modal('#editUserModal', {
+            backdrop: 'static'
+        });
+        this.updateKeysModal = new bootstrap.Modal('#updateKeysModal', {
+            backdrop: 'static'
+        });
+        this.toast = new bootstrap.Toast('#toast', this.toastOptions);
     },
 
     methods: {
+        toastSuccess(message) {
+            this.toastMessage = message;
+            this.toastClass = 'bg-success';
+            this.toast.show();
+        },
+
+        toastError(message) {
+            this.toastMessage = message;
+            this.toastClass = 'bg-danger';
+            this.toast.show();
+        },
+
         async getUsers() {
             try {
                 const result = await axios.get(`/api/users`);
@@ -37,9 +65,6 @@ export default {
         },
 
         addUserModalOpen() {
-            this.addUserModal = new bootstrap.Modal('#addUserModal', {
-                backdrop: 'static'
-            });
             this.addUserModal.show();
         },
 
@@ -50,6 +75,9 @@ export default {
                 const result = await axios.post(`/api/users`, data);
                 console.log(result);
                 await this.getUsers();
+
+                this.toastSuccess('Usuario creado');
+
                 this.addUserModal.hide();
             } catch (error) {
                 console.log(error);
@@ -60,9 +88,6 @@ export default {
             try {
                 const result = await axios.get(`/api/users/${userId}`);
                 this.editUserData = result.data;
-                this.editUserModal = new bootstrap.Modal('#editUserModal', {
-                    backdrop: 'static'
-                });
                 this.editUserModal.show()
             } catch (error) {
                 console.log(error);
@@ -76,9 +101,13 @@ export default {
                 const result = await axios.put(`/api/users/${data.id}`, data);
                 console.log(result);
                 await this.getUsers();
+                
+                this.toastSuccess('Usuario modificado');
+
                 this.editUserModal.hide();
             } catch (error) {
                 console.log(error);
+                this.toastError(error);
             }
         },
 
@@ -90,8 +119,10 @@ export default {
                 console.log(result);
                 await this.getUsers();
                 this.editUserModal.hide();
+                this.toastSuccess('Usuario eliminado');
             } catch (error) {
                 console.log(error);
+                this.toastError(error);
             }
         },
 
@@ -104,16 +135,17 @@ export default {
                 result = await axios.get(`/api/users/${userId}`);
                 console.log(result);
                 this.editUserData = result.data;
+
+                this.toastSuccess('Nuevas llaves creadas');
+
                 this.updateKeysModalClose();
             } catch (error) {
                 console.log(error);
+                this.toastError(error);
             }
         },
 
         updateKeysModalOpen() {
-            this.updateKeysModal = new bootstrap.Modal('#updateKeysModal', {
-                backdrop: 'static'
-            });
             this.editUserModal.toggle();
             this.updateKeysModal.toggle();
         },
@@ -144,8 +176,8 @@ export default {
                 <td>{{ user.id }}</td>
                 <td><a href="#" @click.prevent="editUserModalOpen(user.id)">{{ user.username }}</a></td>
                 <td>{{ user.password }}</td>
-                <td>{{ user.publickey ? user.publickey.substr(71, 8) : '-' }}</td>
-                <td>{{ user.privatekey ? user.privatekey.substr(86, 8) : '-' }}</td>
+                <td>{{ user.publickey ? ( user.publickey.length > 79 ? user.publickey.substr(71, 8) : user.publickey ) : '-' }}</td>
+                <td>{{ user.privatekey ? ( user.publickey.length > 95 ? user.privatekey.substr(86, 8) : user.publickey ) : '-' }}</td>
             </tr> 
         </tbody>
     </table>
@@ -183,8 +215,8 @@ export default {
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Cerrar</button>
                 <button type="button" class="btn btn-primary" @click="addUser">Crear</button>
+                <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Cancelar</button>
             </div>
             </div>
         </div>
@@ -226,7 +258,7 @@ export default {
                     <button type="button" class="btn btn-primary" @click="updateUser">Guardar</button>
                     <button type="button" class="btn btn-info" @click="updateKeysModalOpen">Nuevas llaves</button>
                     <button type="button" class="btn btn-danger" @click="deleteUser">Eliminar</button>
-                    <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Cancelar</button>
                 </div>
             </div>
         </div>
@@ -247,6 +279,18 @@ export default {
                     <button type="button" class="btn btn-info" @click="updateKeys">Generar</button>
                     <button type="button" class="btn btn-warning" @click="updateKeysModalClose">Cancelar</button>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast-container bottom-0 start-50 translate-middle-x">
+        <div id="toast" class="toast align-items-center text-white border-0" :class="toastClass" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    {{ toastMessage }}
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
         </div>
     </div>

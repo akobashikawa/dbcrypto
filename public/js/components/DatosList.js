@@ -131,9 +131,14 @@ export default {
             <div class="modal-body">
                 <form>
                     <div class="mb-3">
-                        <label for="addDatoInputUserId" class="form-label">userId</label>
-                        {{ store.login.id }}
-                        <div id="addDatoInputUserIdHelp" class="form-text">id de usuario</div>
+                        <label for="addDatoInputFromUserId" class="form-label">De</label>
+                        {{ store.login.username }}
+                        <div id="addDatoInputFromUserIdHelp" class="form-text">Autor</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="addDatoInputToUserId" class="form-label">Para</label>
+                        
+                        <div id="addDatoInputUserIdToHelp" class="form-text">Destinatario</div>
                     </div>
                     <div class="mb-3">
                         <label for="addDatoInputPublico" class="form-label">publico</label>

@@ -1,12 +1,15 @@
 const usersController = {
 
     usersService: null,
+    cryptoService: null,
 
     create({
-        usersService
+        usersService,
+        cryptoService
     }) {
         const obj = Object.create(this);
         obj.usersService = usersService;
+        obj.cryptoService = cryptoService;
         return obj;
     },
 
@@ -84,6 +87,25 @@ const usersController = {
             }
         };
     },
+
+    updateKeys() {
+        return async(req, res, next) => {
+            try {
+                const id = req.params.id;
+                const data = req.body;
+                const { publicKey, privateKey } = this.cryptoService.generateKeys();
+                data.publickey = publicKey;
+                data.privatekey = privateKey;
+                const result = await this.usersService.update(id, data);
+                res.json(result);
+            } catch (error) {
+                console.log(error);
+                res.status(500).json({
+                    message: error.message
+                });
+            }
+        };
+    }
 };
 
 module.exports = usersController;

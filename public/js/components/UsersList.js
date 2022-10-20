@@ -161,7 +161,7 @@ export default {
     },
 
     template: `
-<div class="component">
+<div class="component" v-show="store.login && store.login['username'] == 'admin'">
     <h1>{{title}}</h1>
 
     <button type="button" class="btn btn-primary btn-sm ms-1 float-end" v-if="store.login" @click="addUserModalOpen"> Crear </button>

@@ -5,7 +5,7 @@ export default {
         return {
             title: 'Datos',
             store,
-            
+
             datos: [],
             newDatoData: {
                 userId: '',
@@ -46,7 +46,7 @@ export default {
 
         async addDato() {
             try {
-                console.log(this.newDatoData);
+                // console.log(this.newDatoData);
                 const data = this.newDatoData;
                 const result = await axios.post(`/api/datos`, data);
                 console.log(result);
@@ -72,7 +72,7 @@ export default {
 
         async updateDato() {
             try {
-                console.log(this.editDatoData);
+                // console.log(this.editDatoData);
                 const data = this.editDatoData;
                 const result = await axios.put(`/api/datos/${data.id}`, data);
                 console.log(result);
@@ -98,10 +98,10 @@ export default {
     },
 
     template: `
-<div class="component">
+<div class="component" v-show="store.login">
     <h1>{{title}}</h1>
 
-    <button type="button" class="btn btn-primary btn-sm ms-1 float-end" v-if="store.login" @click="addDatoModalOpen"> Crear </button>
+    <button type="button" class="btn btn-primary btn-sm ms-1 float-end" @click="addDatoModalOpen"> Crear </button>
     <button class="btn btn-secondary btn-sm float-end" @click="getDatos">Traer items</button>
 
     <table class="table table-striped table-hover table-sm">

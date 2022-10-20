@@ -29,7 +29,7 @@ const sqlite3Repository = {
                 if (err) {
                     reject(err);
                 } else {
-                    console.log(rows);
+                    // console.log(rows);
                     resolve(rows);
                 }
             });
@@ -42,7 +42,7 @@ const sqlite3Repository = {
                 if (err) {
                     reject(err);
                 } else {
-                    console.log({rows});
+                    // console.log({rows});
                     resolve(rows);
                 }
             });

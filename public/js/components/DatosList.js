@@ -5,6 +5,7 @@ export default {
         return {
             title: 'Datos',
             store,
+            
             datos: [],
             newDatoData: {
                 userId: '',
@@ -100,7 +101,7 @@ export default {
 <div class="component">
     <h1>{{title}}</h1>
 
-    <button type="button" class="btn btn-primary btn-sm ms-1 float-end" @click="addDatoModalOpen" v-if="store.login"> Crear </button>
+    <button type="button" class="btn btn-primary btn-sm ms-1 float-end" v-if="store.login" @click="addDatoModalOpen"> Crear </button>
     <button class="btn btn-secondary btn-sm float-end" @click="getDatos">Traer items</button>
 
     <table class="table table-striped table-hover table-sm">

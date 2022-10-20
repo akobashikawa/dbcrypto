@@ -1,7 +1,11 @@
+import {store} from './store.js';
+
 export default {
     data() {
         return {
             title: 'Usuarios',
+            store,
+
             users: [],
             addUserData: {
                 username: '',
@@ -160,7 +164,7 @@ export default {
 <div class="component">
     <h1>{{title}}</h1>
 
-    <button type="button" class="btn btn-primary btn-sm ms-1 float-end" @click="addUserModalOpen"> Crear </button>
+    <button type="button" class="btn btn-primary btn-sm ms-1 float-end" v-if="store.login" @click="addUserModalOpen"> Crear </button>
     <button class="btn btn-secondary btn-sm float-end" @click="getUsers">Traer items</button>
 
     <table class="table table-striped table-hover table-sm">

@@ -7,6 +7,7 @@ export default {
             store,
             username: null,
             password: null,
+            privatekey: null,
         };
     },
 
@@ -20,7 +21,8 @@ export default {
         async login() {
             try {
                 const result = await axios.get(`/api/users`);
-                const users = result.data;console.log(users);
+                const users = result.data;
+                console.log(users);
                 const isValidUser = (user) => user.username == this.username && user.password == this.password;
                 const found = users.find(user => isValidUser(user));
                 if (found) {

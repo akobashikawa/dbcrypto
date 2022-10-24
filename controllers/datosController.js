@@ -43,6 +43,7 @@ const datosController = {
         return async(req, res, next) => {
             try {
                 const data = req.body;
+                console.log(data);
                 const result = await this.datosService.add(data);
                 res.json(result);
             } catch (error) {

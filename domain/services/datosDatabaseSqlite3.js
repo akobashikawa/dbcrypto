@@ -8,10 +8,11 @@ const datosDbSqlite3 = {
     },
 
     findAll() {
-        var sql = `SELECT d.id, d.userId, d.publico, d.privado
-        FROM Datos d
-        JOIN Users u
-        WHERE d.userId = u.id`;
+        var sql = `SELECT id,
+        userId, (SELECT u.username FROM Users u WHERE userId=u.id) user,
+        toUserId, (SELECT u.username FROM Users u WHERE toUserId=u.id) toUser,
+        publico, privado 
+        FROM Datos`;
         var params = [];
         return this.dbRepository.query(sql, params);
     },

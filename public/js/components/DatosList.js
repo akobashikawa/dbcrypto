@@ -7,14 +7,18 @@ export default {
             store,
 
             datos: [],
+            users: [],
+
             newDatoData: {
                 userId: '',
+                toUserId: '',
                 publico: '',
                 privado: ''
             },
             editDatoData: {
                 id: null,
                 userId: '',
+                toUserId: '',
                 publico: '',
                 privado: ''
             },
@@ -37,7 +41,17 @@ export default {
             }
         },
 
+        async getUsers() {
+            try {
+                const result = await axios.get(`/api/users`);
+                this.users = result.data;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
         addDatoModalOpen() {
+            this.getUsers();
             this.addDatoModal = new bootstrap.Modal('#addDatoModal', {
                 backdrop: 'static'
             });
@@ -48,6 +62,7 @@ export default {
             try {
                 // console.log(this.newDatoData);
                 const data = this.newDatoData;
+                data.userId = this.store.login.id;
                 const result = await axios.post(`/api/datos`, data);
                 console.log(result);
                 await this.getDatos();
@@ -108,6 +123,7 @@ export default {
         <thead>
             <th>id</th>
             <th>userId</th>
+            <th>toUserId</th>
             <th>publico</th>
             <th>privado</th>
         </thead>
@@ -115,6 +131,7 @@ export default {
             <tr v-for="dato of datos">
                 <td><a href="#" @click.prevent="editDatoModalOpen(dato.id)">{{ dato.id }}</a></td>
                 <td>{{ dato.userId }}</td>
+                <td>{{ dato.toUserId }}</td>
                 <td>{{ dato.publico }}</td>
                 <td>{{ dato.privado }}</td>
             </tr> 
@@ -132,14 +149,16 @@ export default {
             <div class="modal-body">
                 <form>
                     <div class="mb-3">
-                        <label for="addDatoInputFromUserId" class="form-label">De</label>
+                        <label for="addDatoInputUserId" class="form-label">De</label>
                         {{ store.login.username }}
-                        <div id="addDatoInputFromUserIdHelp" class="form-text">Autor</div>
+                        <div id="addDatoInputUserIdHelp" class="form-text">Autor</div>
                     </div>
                     <div class="mb-3">
                         <label for="addDatoInputToUserId" class="form-label">Para</label>
-                        
-                        <div id="addDatoInputUserIdToHelp" class="form-text">Destinatario</div>
+                        <select class="form-select" v-model="newDatoData.toUserId">
+                            <option v-for="user of users" :value="user.id">{{ user.username }}</option>
+                        </select>
+                        <div id="addDatoInputToUserIdHelp" class="form-text">Destinatario</div>
                     </div>
                     <div class="mb-3">
                         <label for="addDatoInputPublico" class="form-label">publico</label>
